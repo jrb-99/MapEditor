@@ -8,9 +8,9 @@ This project was developed individually, is written in Java and the GUI is provi
 
 Controls:
 
-WASD: Navigate the cursor
-SPACEBAR: Paint positions
-F: Delete positions
+- WASD: Navigate the cursor
+- SPACEBAR: Paint positions
+- F: Delete positions
 
 ### 🚧 Work in Progress 🚧 ### 
 
