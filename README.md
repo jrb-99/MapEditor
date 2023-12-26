@@ -10,7 +10,7 @@ Controls:
 
 - WASD: Navigate the cursor
 - SPACEBAR: Paint positions
-- F: Delete positions
+- E: Delete positions
 
 ### 🚧 Work in Progress 🚧 ### 
 
