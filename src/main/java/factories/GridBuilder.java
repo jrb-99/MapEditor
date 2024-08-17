@@ -14,15 +14,15 @@ public class GridBuilder implements Builder{
     }
 
     @Override
-    public Cursor buildCursor() {
+    public Cursor buildCursor(int rows, int cols) {
 
-        return Cursor.getInstance();
+        return Cursor.getInstance(rows, cols);
     }
 
     @Override
     public Grid buildGrid(int rows, int cols) {
 
-        Cursor cursor = buildCursor();
+        Cursor cursor = buildCursor(rows, cols);
         grid = new Grid(rows, cols, cursor);
 
         for(int i = 1; i <= rows; i++){

@@ -1,28 +1,33 @@
 package grid;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
-import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
+import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
-public class Cursor extends Cell implements KeyboardHandler, Controllable {
+import java.util.HashMap;
+import java.util.Map;
+import static grid.Cell.CELL_SIZE;
+import static grid.Cell.PADDING;
+
+public class Cursor extends Rectangle implements Controllable {
 
     private static Cursor instance;
 
-    private static final int CURSOR_ID = 99;
+    private Map<Integer, Integer> position = new HashMap<>();
 
-    private Keyboard keyboard;
+    private boolean isFilled = false;
+
+    private int max_rows;
+
+    private int max_cols;
 
     private Cursor() {
 
-        super(PADDING, PADDING, CELL_SIZE, CELL_SIZE, CURSOR_ID, CURSOR_ID);
-        keyboard = new Keyboard(this);
-        createKeyboardEvents();
+        super(PADDING, PADDING, CELL_SIZE, CELL_SIZE);
+        position.put(1, 1);
 
     }
 
-    public static Cursor getInstance() {
+    public static Cursor getInstance(int max_rows, int max_cols) {
 
         if(instance == null) {
 
@@ -30,118 +35,88 @@ public class Cursor extends Cell implements KeyboardHandler, Controllable {
             instance.setColor(Color.CYAN);
             instance.fill();
             instance.setFilled(true);
+            instance.setMax_rows(max_rows);
+            instance.setMax_cols(max_cols);
+            System.out.println("max rows: " + max_rows + " max cols: " + max_cols);
 
         }
 
         return instance;
     }
 
-
-    @Override
-    public void keyPressed(KeyboardEvent keyboardEvent) {
-
-        switch (keyboardEvent.getKey()){
-            case KeyboardEvent.KEY_D:
-
-                moveRight();
-                break;
-            case KeyboardEvent.KEY_A:
-
-                moveLeft();
-                break;
-            case KeyboardEvent.KEY_S:
-
-                moveDown();
-                break;
-            case KeyboardEvent.KEY_W:
-
-                moveUp();
-                break;
-            case KeyboardEvent.KEY_SPACE:
-
-                paintCell();
-                break;
-            case KeyboardEvent.KEY_E:
-
-                erase();
-                break;
-
-        }
-
-
+    private void setMax_rows(int max_rows) {
+        this.max_rows = max_rows;
     }
 
-    @Override
-    public void keyReleased(KeyboardEvent keyboardEvent) {
-
+    private void setMax_cols(int max_cols) {
+        this.max_cols = max_cols;
     }
 
-    public void createKeyboardEvents(){
-        //Right
+    private void setFilled(boolean filled) {
+        this.isFilled = filled;
+    }
 
-        KeyboardEvent keyboardEventRight = new KeyboardEvent();
-        keyboardEventRight.setKey(KeyboardEvent.KEY_D);
-        keyboardEventRight.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyboardEventRight);
+    public boolean isFilled() {
+        return isFilled;
+    }
 
-        //Left
+    private void setPosition(int row, int col) {
+        this.position.clear();
+        this.position.put(row, col);
+        System.out.println("position(rows, cols): " + position.toString());
+    }
 
-        KeyboardEvent keyboardEventLeft = new KeyboardEvent();
-        keyboardEventLeft.setKey(KeyboardEvent.KEY_A);
-        keyboardEventLeft.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyboardEventLeft);
+    private int getRowPos(){
 
-        //Up
+        return position.keySet().toArray(new Integer[0])[0];
+    }
 
-        KeyboardEvent keyboardEventUp = new KeyboardEvent();
-        keyboardEventUp.setKey(KeyboardEvent.KEY_W);
-        keyboardEventUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyboardEventUp);
+    private int getColPos(){
 
-        //Down
+        return position.values().toArray(new Integer[0])[0];
+    }
 
-        KeyboardEvent keyboardEventDown = new KeyboardEvent();
-        keyboardEventDown.setKey(KeyboardEvent.KEY_S);
-        keyboardEventDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyboardEventDown);
-
-        //Paint (Space)
-
-        KeyboardEvent keyboardEventSpace = new KeyboardEvent();
-        keyboardEventSpace.setKey(KeyboardEvent.KEY_SPACE);
-        keyboardEventSpace.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyboardEventSpace);
-
-        //Delete (E)
-
-        KeyboardEvent keyboardEventDelete = new KeyboardEvent();
-        keyboardEventDelete.setKey(KeyboardEvent.KEY_E);
-        keyboardEventDelete.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyboardEventDelete);
-
+    public Map<Integer, Integer> getPosition() {
+        return position;
     }
 
     @Override
     public void moveUp() {
+        if(getRowPos() == 1) {
+            return;
+        }
         instance.translate(0, -CELL_SIZE);
+        instance.setPosition(getRowPos()-1, getColPos());
 
     }
 
     @Override
     public void moveDown() {
+        if(getRowPos() == this.max_rows) {
+            return;
+        }
         instance.translate(0, CELL_SIZE);
+        instance.setPosition(getRowPos()+1, getColPos());
 
     }
 
     @Override
     public void moveLeft() {
+        if(getColPos() == 1) {
+            return;
+        }
         instance.translate(-CELL_SIZE, 0);
+        instance.setPosition(getRowPos(), getColPos()-1);
 
     }
 
     @Override
     public void moveRight() {
+        if(getColPos() == this.max_cols) {
+            return;
+        }
         instance.translate(CELL_SIZE, 0);
+        instance.setPosition(getRowPos(), getColPos()+1);
 
     }
 
