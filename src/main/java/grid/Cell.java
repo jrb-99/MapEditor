@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Cell extends Rectangle {
 
-    public static final int PADDING = 10;
+    public static final int PADDING = 30;
 
     public static final int CELL_SIZE = 30;
 

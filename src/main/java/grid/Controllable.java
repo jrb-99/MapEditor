@@ -2,16 +2,16 @@ package grid;
 
 public interface Controllable {
 
-    void moveUp();
+    void moveUp(Cell cell);
 
-    void moveDown();
+    void moveDown(Cell cell);
 
-    void moveLeft();
+    void moveLeft(Cell cell);
 
-    void moveRight();
+    void moveRight(Cell cell);
 
-    void paintCell();
+    void paintCell(Cell cell);
 
-    void erase();
+    void erase(Cell cell);
 
 }

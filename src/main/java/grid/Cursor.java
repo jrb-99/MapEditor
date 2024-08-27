@@ -63,15 +63,15 @@ public class Cursor extends Rectangle implements Controllable {
     private void setPosition(int row, int col) {
         this.position.clear();
         this.position.put(row, col);
-        System.out.println("position(rows, cols): " + position.toString());
+        //System.out.println("position(rows, cols): " + position.toString());
     }
 
-    private int getRowPos(){
+    protected int getRowPos(){
 
         return position.keySet().toArray(new Integer[0])[0];
     }
 
-    private int getColPos(){
+    protected int getColPos(){
 
         return position.values().toArray(new Integer[0])[0];
     }
@@ -81,52 +81,79 @@ public class Cursor extends Rectangle implements Controllable {
     }
 
     @Override
-    public void moveUp() {
+    public void moveUp(Cell cell) {
         if(getRowPos() == 1) {
             return;
         }
         instance.translate(0, -CELL_SIZE);
         instance.setPosition(getRowPos()-1, getColPos());
+        System.out.println("cell(row,col): " + cell.getCellId().toString() + " | " + "cursor(row.col): " + instance.position.toString());
+        System.out.println("x: " + instance.getX() + "y: " + instance.getY());
+
 
     }
 
     @Override
-    public void moveDown() {
+    public void moveDown(Cell cell) {
         if(getRowPos() == this.max_rows) {
             return;
         }
         instance.translate(0, CELL_SIZE);
         instance.setPosition(getRowPos()+1, getColPos());
+        System.out.println("cell(row,col): " + cell.getCellId().toString() + " | " + "cursor(row.col): " + instance.position.toString());
+        System.out.println("x: " + instance.getX() + "y: " + instance.getY());
+
+
 
     }
 
     @Override
-    public void moveLeft() {
+    public void moveLeft(Cell cell) {
         if(getColPos() == 1) {
             return;
         }
         instance.translate(-CELL_SIZE, 0);
         instance.setPosition(getRowPos(), getColPos()-1);
+        System.out.println("cell(row,col): " + cell.getCellId().toString() + " | " + "cursor(row.col): " + instance.position.toString());
+        System.out.println("x: " + instance.getX() + "y: " + instance.getY());
 
     }
 
     @Override
-    public void moveRight() {
+    public void moveRight(Cell cell) {
         if(getColPos() == this.max_cols) {
             return;
         }
         instance.translate(CELL_SIZE, 0);
         instance.setPosition(getRowPos(), getColPos()+1);
+        System.out.println("cell(row,col): " + cell.getCellId().toString() + " | " + "cursor(row.col): " + instance.position.toString());
+        System.out.println("x: " + instance.getX() + "y: " + instance.getY());
+
 
     }
 
     @Override
-    public void paintCell() {
+    public void paintCell(Cell cell) {
+        if(cell.getFilled()){
+            System.out.println("Cell is filled");
+            return;
+        }
+
+        cell.setColor(Color.BLACK);
+        cell.fill();
+        cell.setFilled(true);
+
 
     }
 
     @Override
-    public void erase() {
+    public void erase(Cell cell) {
+        if(cell.getFilled()) {
+
+            cell.delete();
+            cell.draw();
+            cell.setFilled(false);
+        }
 
     }
 }

@@ -8,8 +8,12 @@ public class Sandbox {
 
         GridBuilder builder = new GridBuilder();
         Grid grid = builder.buildGrid(20, 20);
+        //grid.getCell(1, 1).fill();
+        //grid.getCell(2, 2).fill();
+        //grid.getCell(3, 1).fill();
 
-        grid.printGrid();
+
+        //grid.printGrid();
 
 
 

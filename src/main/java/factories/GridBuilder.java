@@ -10,7 +10,7 @@ public class GridBuilder implements Builder{
 
     @Override
     public Cell buildCell(int i, int j) {
-        return new Cell(Cell.PADDING, Cell.PADDING, Cell.CELL_SIZE * i, Cell.CELL_SIZE * j, i, j);
+        return new Cell(Cell.PADDING * j, Cell.PADDING * i , Cell.CELL_SIZE, Cell.CELL_SIZE, i, j);
     }
 
     @Override
@@ -28,7 +28,9 @@ public class GridBuilder implements Builder{
         for(int i = 1; i <= rows; i++){
             for(int j = 1; j <= cols; j++){
                 Cell cell = buildCell(i, j);
-                grid.addCell(i - 1, j -1, cell);
+                System.out.println("i row: " + i + " j col: " + j);
+                System.out.println(cell.getCellId().toString());
+                grid.addCell(i, j, cell);
                 cell.draw();
             }
         }

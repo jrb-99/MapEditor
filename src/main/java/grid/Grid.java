@@ -5,6 +5,8 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
+import java.util.*;
+
 public class Grid implements KeyboardHandler {
 
     private Cell[][] cellArr;
@@ -29,8 +31,12 @@ public class Grid implements KeyboardHandler {
 
     public void addCell(int row, int col, Cell cell){
 
-        cellArr[row][col] = cell;
+        cellArr[row-1][col-1] = cell;
 
+    }
+
+    public Cell getCell(int row, int col){
+        return cellArr[row-1][col-1];
     }
 
     public Cursor getCursor(){
@@ -45,6 +51,20 @@ public class Grid implements KeyboardHandler {
         return this.cols;
     }
 
+    private Cell cellMatch(Map<Integer, Integer> map){
+
+        for(int i = 0; i < cellArr.length; i++){
+            for(int j = 0; j < cellArr[i].length; j++){
+                if(cellArr[i][j].getCellId().equals(map)){
+                    System.out.println(cellArr[i][j].getCellId());
+                    return cellArr[i][j];
+                }
+            }
+        }
+        return null;
+
+    }
+
     //Cursor movement ***********************************
 
     @Override
@@ -53,27 +73,27 @@ public class Grid implements KeyboardHandler {
         switch (keyboardEvent.getKey()){
             case KeyboardEvent.KEY_D:
 
-                cursor.moveRight();
+                cursor.moveRight(cellMatch(cursor.getPosition()));
                 break;
             case KeyboardEvent.KEY_A:
 
-                cursor.moveLeft();
+                cursor.moveLeft(cellMatch(cursor.getPosition()));
                 break;
             case KeyboardEvent.KEY_S:
 
-                cursor.moveDown();
+                cursor.moveDown(cellMatch(cursor.getPosition()));
                 break;
             case KeyboardEvent.KEY_W:
 
-                cursor.moveUp();
+                cursor.moveUp(cellMatch(cursor.getPosition()));
                 break;
             case KeyboardEvent.KEY_SPACE:
 
-                cursor.paintCell();
+                cursor.paintCell(cellMatch(cursor.getPosition()));
                 break;
             case KeyboardEvent.KEY_E:
 
-                cursor.erase();
+                cursor.erase(cellMatch(cursor.getPosition()));
                 break;
 
         }
